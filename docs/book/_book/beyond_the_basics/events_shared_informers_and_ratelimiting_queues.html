@@ -1,0 +1,949 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>Events, Shared Informers and RateLimiting Queues · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-panel/icons.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-panel/panel.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-theme-api/theme-api.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="logging_and_publishing_events.html" />
+    
+    
+    <link rel="prev" href="finalizers_and_garbage_collection.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    Introduction
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">Getting Started</li>
+        
+        
+    
+        <li class="chapter " data-level="2.1" data-path="../getting_started/why_kubernetes.html">
+            
+                <a href="../getting_started/why_kubernetes.html">
+            
+                    
+                    Why Kubernetes APIs
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2" data-path="../getting_started/what_is_kubebuilder.html">
+            
+                <a href="../getting_started/what_is_kubebuilder.html">
+            
+                    
+                    What is Kubebuilder
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3" data-path="../getting_started/installation_and_setup.html">
+            
+                <a href="../getting_started/installation_and_setup.html">
+            
+                    
+                    Installation and Setup
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.4" data-path="../getting_started/hello_world.html">
+            
+                <a href="../getting_started/hello_world.html">
+            
+                    
+                    Hello World
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">Basics</li>
+        
+        
+    
+        <li class="chapter " data-level="3.1" data-path="../basics/project_creation_and_structure.html">
+            
+                <a href="../basics/project_creation_and_structure.html">
+            
+                    
+                    Project Creation and Structure
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.2" >
+            
+                <span>
+            
+                    
+                    Resource Fundamentals
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="3.2.1" data-path="../basics/what_is_resource.html">
+            
+                <a href="../basics/what_is_resource.html">
+            
+                    
+                    What is a Resource
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.2.2" data-path="../basics/simple_resource.html">
+            
+                <a href="../basics/simple_resource.html">
+            
+                    
+                    Simple Resource Example
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="3.3" >
+            
+                <span>
+            
+                    
+                    Controller Fundamentals
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="3.3.1" data-path="../basics/what_is_controller.html">
+            
+                <a href="../basics/what_is_controller.html">
+            
+                    
+                    What is a Contoller
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.3.2" data-path="../basics/simple_controller.html">
+            
+                <a href="../basics/simple_controller.html">
+            
+                    
+                    Simple Controller Example
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="3.4" >
+            
+                <span>
+            
+                    
+                    Cmd Fundamentals
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="3.4.1" data-path="../basics/register_controllers_resources.md">
+            
+                <span>
+            
+                    
+                    Registering Controllers and Resources
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="3.5" data-path="../basics/development_workflow.html">
+            
+                <a href="../basics/development_workflow.html">
+            
+                    
+                    Development Workflow
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">Beyond the Basics</li>
+        
+        
+    
+        <li class="chapter " data-level="4.1" >
+            
+                <span>
+            
+                    
+                    Resources
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="4.1.1" data-path="generated_code.html">
+            
+                <a href="generated_code.html">
+            
+                    
+                    Configuring Generated Code
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.1.2" data-path="handling_failures.md">
+            
+                <span>
+            
+                    
+                    Handling Read / Write Failures
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.1.3" data-path="generated_code.html">
+            
+                <a href="generated_code.html">
+            
+                    
+                    Non-Namespaced Objects
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.1.4" data-path="resource_versioning.html">
+            
+                <a href="resource_versioning.html">
+            
+                    
+                    Multi Version Support
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.1.5" data-path="atomic_and_associative_fields.html">
+            
+                <a href="atomic_and_associative_fields.html">
+            
+                    
+                    Atomic and Associative Fields
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.1.6" data-path="schema_validation_with_openapi.html">
+            
+                <a href="schema_validation_with_openapi.html">
+            
+                    
+                    Validation using OpenAPI
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.1.7" data-path="additional_validation_with_webhooks.html">
+            
+                <a href="additional_validation_with_webhooks.html">
+            
+                    
+                    Validation using Webhooks
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.1.8" data-path="defaulting_and_canonicalization_with_webhooks.html">
+            
+                <a href="defaulting_and_canonicalization_with_webhooks.html">
+            
+                    
+                    Defaulting and Canonicalization using Webhooks
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.1.9" data-path="debugging_resources.html">
+            
+                <a href="debugging_resources.html">
+            
+                    
+                    Debugging Resources
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="4.2" >
+            
+                <span>
+            
+                    
+                    Controllers
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="4.2.1" data-path="generating_unique_object_names.md">
+            
+                <span>
+            
+                    
+                    Generating Unique Object Names
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.2.2" data-path="finalizers_and_garbage_collection.html">
+            
+                <a href="finalizers_and_garbage_collection.html">
+            
+                    
+                    Finalizers and Garbage Collection
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="4.2.3" data-path="events_shared_informers_and_ratelimiting_queues.html">
+            
+                <a href="events_shared_informers_and_ratelimiting_queues.html">
+            
+                    
+                    Events, Shared Informers and RateLimiting Queues
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.2.4" data-path="logging_and_publishing_events.html">
+            
+                <a href="logging_and_publishing_events.html">
+            
+                    
+                    Logging and Publishing Events
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.2.5" data-path="debugging_controllers.html">
+            
+                <a href="debugging_controllers.html">
+            
+                    
+                    Debugging Controllers
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="4.3" >
+            
+                <span>
+            
+                    
+                    Controller Manager
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="4.3.1" data-path="initializing_and_wiring_dependencies.html">
+            
+                <a href="initializing_and_wiring_dependencies.html">
+            
+                    
+                    Initializing and Wiring Shared Dependencies
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.3.2" data-path="installing_crds.html">
+            
+                <a href="installing_crds.html">
+            
+                    
+                    Installing CRDs
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+        
+        <li class="header">Publishing and Running in Production</li>
+        
+        
+    
+        <li class="chapter " data-level="5.1" data-path="../publishing_and_running_in_production/integration_testing.html">
+            
+                <a href="../publishing_and_running_in_production/integration_testing.html">
+            
+                    
+                    Integration Testing
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.2" data-path="../publishing_and_running_in_production/monitoring_and_alerting.html">
+            
+                <a href="../publishing_and_running_in_production/monitoring_and_alerting.html">
+            
+                    
+                    Monitoring and Alerting
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.3" data-path="../publishing_and_running_in_production/build_and_release.html">
+            
+                <a href="../publishing_and_running_in_production/build_and_release.html">
+            
+                    
+                    Build and Release
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.4" data-path="../publishing_and_running_in_production/package_and_publishing.html">
+            
+                <a href="../publishing_and_running_in_production/package_and_publishing.html">
+            
+                    
+                    Packaging and Publishing
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">Raw Extension Points</li>
+        
+        
+    
+        <li class="chapter " data-level="6.1" >
+            
+                <span>
+            
+                    
+                    CustomResourceDefinitions
+            
+                </span>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="6.2" >
+            
+                <span>
+            
+                    
+                    Annotations as Virtual Fields
+            
+                </span>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="6.3" >
+            
+                <span>
+            
+                    
+                    Webhooks
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="6.3.1" >
+            
+                <span>
+            
+                    
+                    Validating
+            
+                </span>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="6.3.2" >
+            
+                <span>
+            
+                    
+                    Mutating
+            
+                </span>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="6.4" >
+            
+                <span>
+            
+                    
+                    CRUD APIs
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="6.4.1" >
+            
+                <span>
+            
+                    
+                    Get, List, Watch
+            
+                </span>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="6.4.2" >
+            
+                <span>
+            
+                    
+                    Create, Update, Patch
+            
+                </span>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="6.5" >
+            
+                <span>
+            
+                    
+                    Init Containers
+            
+                </span>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">Reference</li>
+        
+        
+    
+        <li class="chapter " data-level="7.1" >
+            
+                <span>
+            
+                    
+                    Resource Definitions
+            
+                </span>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="7.2" >
+            
+                <span>
+            
+                    
+                    Controller Definitions
+            
+                </span>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >Events, Shared Informers and RateLimiting Queues</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"Events, Shared Informers and RateLimiting Queues","level":"4.2.3","depth":2,"next":{"title":"Logging and Publishing Events","level":"4.2.4","depth":2,"path":"beyond_the_basics/logging_and_publishing_events.md","ref":"beyond_the_basics/logging_and_publishing_events.md","articles":[]},"previous":{"title":"Finalizers and Garbage Collection","level":"4.2.2","depth":2,"path":"beyond_the_basics/finalizers_and_garbage_collection.md","ref":"beyond_the_basics/finalizers_and_garbage_collection.md","articles":[]},"dir":"neutral"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["theme-api","panel"],"pluginsConfig":{"theme-api":{"languages":[],"split":true,"theme":"light"},"panel":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"beyond_the_basics/events_shared_informers_and_ratelimiting_queues.md","mtime":"2018-04-20T20:45:18.476Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-04-23T14:49:24.178Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-theme-api/theme-api.js"></script>
+        
+    
+
+    </body>
+</html>
+
