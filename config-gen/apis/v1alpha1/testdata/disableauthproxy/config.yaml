@@ -1,0 +1,10 @@
+apiVersion: kubebuilder.sigs.k8s.io
+kind: APIConfiguration
+metadata:
+  name: simple
+spec:
+  projectDirectory: ../project/...
+
+  image: example/simple:latest
+
+  disableAuthProxy: true

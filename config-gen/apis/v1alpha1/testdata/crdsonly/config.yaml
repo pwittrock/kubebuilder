@@ -1,0 +1,14 @@
+apiVersion: kubebuilder.sigs.k8s.io/v1alpha1
+kind: KubebuilderProject
+metadata:
+  name: simple
+spec:
+  projectName: simple
+  projectDirectory: ../project/...
+
+  image: example/simple:latest
+
+  components:
+    namespace: false
+    controller-manager: false
+    rbac: false

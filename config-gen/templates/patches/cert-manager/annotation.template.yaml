@@ -1,0 +1,5 @@
+{{ if .Spec.Enabled "cert-manager" }}
+metadata:
+  annotations:
+    cert-manager.io/inject-ca-from:  {{ .Spec.Namespace }}/{{ .Spec.Name }}-serving-cert
+{{ end }}

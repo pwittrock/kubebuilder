@@ -1,0 +1,12 @@
+{{- if .Spec.ComponentConfigEnabled  }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: manager-config
+  namespace: {{ .Spec.Namespace }}
+  labels:
+    control-plane: controller-manager
+data:
+  controller_manager_config.yaml: ""
+---
+{{ end }}

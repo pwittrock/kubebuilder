@@ -24,6 +24,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 
+	"sigs.k8s.io/kubebuilder/v3/config-gen/apis/v1alpha1"
 	internalconfig "sigs.k8s.io/kubebuilder/v3/pkg/cli/internal/config"
 	"sigs.k8s.io/kubebuilder/v3/pkg/config"
 	cfgv3 "sigs.k8s.io/kubebuilder/v3/pkg/config/v3"
@@ -429,6 +430,13 @@ func (c *cli) addSubcommands() {
 	if c.version != "" {
 		c.cmd.AddCommand(c.newVersionCmd())
 	}
+
+	alpha := &cobra.Command{
+		Use:   "alpha",
+		Short: "Alpha kubebuilder subcommands",
+	}
+	c.cmd.AddCommand(alpha)
+	alpha.AddCommand(v1alpha1.NewCommand())
 }
 
 // buildCmd creates the underlying cobra command and stores it internally.

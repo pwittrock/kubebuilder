@@ -1,0 +1,67 @@
+{{ if .Spec.Enabled "controller-manager" }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: controller-manager
+  namespace: {{ .Spec.Namespace }}
+  labels:
+    control-plane: controller-manager
+spec:
+  selector:
+    matchLabels:
+      control-plane: controller-manager
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        control-plane: controller-manager
+    spec:
+      containers:
+      - command:
+        - /manager
+        args:
+        - --enable-leader-election
+        image: {{ .Spec.Image }}
+        name: manager
+        resources:
+          limits:
+            cpu: 100m
+            memory: 30Mi
+          requests:
+            cpu: 100m
+            memory: 20Mi
+      terminationGracePeriodSeconds: 10
+---
+{{- if .Spec.Enabled "webhooks"  }}
+apiVersion: v1
+kind: Service
+metadata: 
+  namespace: {{ .Spec.Namespace }}
+  name: webhook-service
+  labels:
+    control-plane: webhook
+spec:
+  ports:
+  - port: 443
+    targetPort: webhook-server
+  selector:
+    control-plane: controller-manager
+---
+{{- end}}
+{{- if not .Spec.DisableAuthProxy }}
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: {{ .Spec.Namespace }}
+  name: metrics-service
+  labels:
+    control-plane: controller-manager
+spec:
+  ports:
+  - name: https
+    port: 8443
+    targetPort: https
+  selector:
+    control-plane: controller-manager
+---
+{{ end }}{{ end }}

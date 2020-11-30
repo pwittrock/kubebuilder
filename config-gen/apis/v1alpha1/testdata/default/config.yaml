@@ -1,0 +1,8 @@
+apiVersion: kubebuilder.sigs.k8s.io
+kind: KubebuilderProject
+metadata:
+  name: simple
+spec:
+  projectDirectory: ../project/...
+
+  image: example/simple:latest

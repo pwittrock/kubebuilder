@@ -1,0 +1,9 @@
+{{ if .Spec.Enabled "namespace" }}
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    control-plane: controller-manager
+  name: {{ .Spec.Namespace }}
+---
+{{- end }}

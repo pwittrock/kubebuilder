@@ -1,0 +1,12 @@
+apiVersion: kubebuilder.sigs.k8s.io
+kind: APIConfiguration
+metadata:
+  name: simple
+spec:
+  projectDirectory: ../project/...
+
+  image: example/simple:latest
+
+  components:
+    cert-manager: true
+    webhooks: true
