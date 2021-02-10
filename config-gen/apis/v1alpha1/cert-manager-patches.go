@@ -6,17 +6,15 @@ import (
 )
 
 // CertManagerPatchTemplate returns the PatchTemplate for cert-manager
-func CertManagerPatchTemplate(kp *KubebuilderProject) framework.PT {
-	return framework.PT{
-		Dir: pkger.Dir("/config-gen/templates/patches/cert-manager"),
-		Selector: func() *framework.Selector {
-			return &framework.Selector{
-				Kinds: []string{
-					"CustomResourceDefinition",
-					"ValidatingWebhookConfiguration",
-					"MutatingWebhookConfiguration",
-				},
-			}
+func CertManagerPatchTemplate(kp *KubebuilderProject) framework.PatchTemplate {
+	return &framework.ResourcePatchTemplate{
+		TemplatesFn: framework.TemplatesFnFromDir(pkger.Dir("/config-gen/templates/patches/cert-manager")),
+		Selector: &framework.Selector{
+			Kinds: []string{
+				"CustomResourceDefinition",
+				"ValidatingWebhookConfiguration",
+				"MutatingWebhookConfiguration",
+			},
 		},
 	}
 }

@@ -7,17 +7,15 @@ import (
 )
 
 // CRDPatchTemplate returns the PatchTemplate for crd
-func CRDPatchTemplate(kp *KubebuilderProject) framework.PT {
-	return framework.PT{
-		Dir: pkger.Dir("/config-gen/templates/patches/crd"),
-		Selector: func() *framework.Selector {
-			return &framework.Selector{
-				Kinds: []string{"CustomResourceDefinition"},
-				Filter: func(r *yaml.RNode) bool {
-					m, _ := r.GetMeta()
-					return kp.Spec.ConversionWebhooks[m.Name]
-				},
-			}
+func CRDPatchTemplate(kp *KubebuilderProject) framework.PatchTemplate {
+	return &framework.ResourcePatchTemplate{
+		TemplatesFn: framework.TemplatesFnFromDir(pkger.Dir("/config-gen/templates/patches/crd")),
+		Selector: &framework.Selector{
+			Kinds: []string{"CustomResourceDefinition"},
+			MatchFn: func(r *yaml.RNode) bool {
+				m, _ := r.GetMeta()
+				return kp.Spec.ConversionWebhooks[m.Name]
+			},
 		},
 	}
 }

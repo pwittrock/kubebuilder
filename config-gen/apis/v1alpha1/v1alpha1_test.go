@@ -24,6 +24,6 @@ import (
 )
 
 func TestNewCommand(t *testing.T) {
-	test := frameworktestutil.ResultsChecker{Command: v1alpha1.NewCommand}
+	test := frameworktestutil.CommandResultsChecker{Command: v1alpha1.NewCommand}
 	test.Assert(t)
 }

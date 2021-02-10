@@ -22,7 +22,7 @@ import (
 	"sigs.k8s.io/kustomize/kyaml/yaml"
 )
 
-var _ kio.Filter = &ControllerGenFilter{}
+var _ kio.Filter = &ComponentFilter{}
 
 // ComponentFilter inserts the component config read from disk into the ConfigMap
 type ComponentFilter struct {
@@ -40,7 +40,7 @@ func (cf ComponentFilter) Filter(input []*yaml.RNode) ([]*yaml.RNode, error) {
 		Names:       []string{"manager-config"},
 		Namespaces:  []string{cf.Spec.Namespace},
 	}
-	matches, err := s.GetMatches(&framework.ResourceList{Items: input})
+	matches, err := s.Filter(input)
 	if err != nil {
 		return nil, err
 	}

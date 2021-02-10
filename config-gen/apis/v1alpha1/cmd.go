@@ -27,6 +27,7 @@ import (
 	// import pkged files
 	_ "sigs.k8s.io/kubebuilder/v3"
 	"sigs.k8s.io/kustomize/kyaml/fn/framework"
+	"sigs.k8s.io/kustomize/kyaml/fn/framework/command"
 	"sigs.k8s.io/kustomize/kyaml/kio"
 )
 
@@ -44,8 +45,8 @@ func NewCommand() *cobra.Command {
 		os.Exit(1)
 	}
 
-	c := framework.TemplateCommand{
-		API: kp,
+	p := framework.TemplateProcessor{
+		TemplateData: kp,
 
 		MergeResources: true, // apply additional inputs as patches
 
@@ -58,14 +59,16 @@ func NewCommand() *cobra.Command {
 		},
 
 		// generate resources
-		TemplatesFn: framework.TemplatesFromDir(pkger.Dir("/config-gen/templates/resources")),
+		ResourceTemplates: []framework.ResourceTemplate{{
+			TemplatesFn: framework.TemplatesFnFromDir(pkger.Dir("/config-gen/templates/resources")),
+		}},
 
 		// patch resources
-		PatchTemplatesFn: framework.PatchTemplatesFromDir(
+		PatchTemplates: []framework.PatchTemplate{
 			CRDPatchTemplate(kp),
 			CertManagerPatchTemplate(kp),
 			ControllerManagerPatchTemplate(kp),
-		),
+		},
 
 		// perform final modifications
 		PostProcessFilters: []kio.Filter{
@@ -73,7 +76,8 @@ func NewCommand() *cobra.Command {
 			ComponentFilter{KubebuilderProject: kp},
 			SortFilter{KubebuilderProject: kp},
 		},
-	}.GetCommand()
+	}
+	c := command.Build(p, false, true)
 
 	if os.Getenv("KUSTOMIZE_FUNCTION") == "true" {
 		// run as part of kustomize -- read from stdin
